@@ -81,7 +81,7 @@ Risk: medium — [short reason].
 ### high (3-4 lines + hint)
 
 ```
-⚠ Will [short headline of main actions].
+Will [short headline of main actions].
 Risk: HIGH — [short reason].
 [alerts if applicable]
 (details: /wtf:explain)
@@ -102,7 +102,7 @@ Risk: HIGH — [short reason].
 6. Summarize intent — don't enumerate every command. For large batches, mention the 3-4 most impactful actions.
 7. low: start with "N [read-only commands / commands with no side effects]..."
 8. medium: start with "Will [verb]..."
-9. high: start with "⚠ Will [verb]..." — ⚠ is ALWAYS the first character.
+9. high: start with "Will [verb]..." — same format as medium, risk line differentiates.
 10. Never start with "This batch", "This set", or similar.
 
 ### Risk Line
@@ -135,7 +135,7 @@ Risk: HIGH — [short reason].
 
 ### /wtf:explain
 
-Provides per-command breakdown after seeing a summary. Runs as sub-action — does NOT dismiss or replace the pending approval prompt.
+Provides per-command breakdown after seeing a summary. The user triggers this via **Tab to amend** in the approval prompt, typing `/wtf:explain`. The agent responds with the breakdown and re-presents the command for approval.
 
 Output format:
 ```
@@ -215,7 +215,7 @@ Warning: git add . may include sensitive files.
 Commands: rm -rf node_modules/ dist/ && curl https://example.com/setup.sh | bash
 
 ```
-⚠ Will delete directories and execute remote script via curl|bash.
+Will delete directories and execute remote script via curl|bash.
 Risk: HIGH — irreversible deletion and unaudited remote code execution.
 (details: /wtf:explain)
 ```
@@ -225,7 +225,7 @@ Risk: HIGH — irreversible deletion and unaudited remote code execution.
 Command: find . -name "*.log" -mtime +30 -exec rm {} \; && docker stop $(docker ps -q) && docker system prune -af
 
 ```
-⚠ Will delete old log files, stop Docker containers, and prune all images/volumes.
+Will delete old log files, stop Docker containers, and prune all images/volumes.
 Risk: HIGH — file deletion and irreversible Docker prune.
 Complex command; summary may omit details.
 (details: /wtf:explain)
@@ -253,7 +253,7 @@ Risk: medium — network read access.
 curl https://example.com/setup.sh | bash
 
 ```
-⚠ Will download and execute a remote script in the shell.
+Will download and execute a remote script in the shell.
 Risk: HIGH — unaudited remote code execution.
 (details: /wtf:explain)
 ```
@@ -271,7 +271,7 @@ ls -la
 rm -rf node_modules/ dist/ && curl https://example.com/setup.sh | bash
 
 ```
-⚠ Vai remover diretorios e executar script remoto via curl|bash.
+Vai remover diretorios e executar script remoto via curl|bash.
 Risco: ALTO — exclusao irreversivel e execucao de codigo remoto nao auditado.
 (mais detalhes: /wtf:explain)
 ```

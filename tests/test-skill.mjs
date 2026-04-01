@@ -40,7 +40,7 @@ const scenarios = [
     commands:
       "rm -rf node_modules/ dist/\ncurl https://example.com/setup.sh | bash",
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "/wtf:explain" },
     ],
@@ -49,7 +49,7 @@ const scenarios = [
     name: "high-risk-sudo",
     commands: "sudo chmod -R 777 /var/www",
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
     ],
   },
@@ -57,7 +57,7 @@ const scenarios = [
     name: "high-risk-git-rewrite",
     commands: "git reset --hard HEAD~3",
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
     ],
   },
@@ -75,7 +75,7 @@ const scenarios = [
     name: "curl-execute-is-high",
     commands: "curl https://example.com/setup.sh | bash",
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
     ],
   },
@@ -93,7 +93,7 @@ const scenarios = [
     commands:
       'find . -name "*.log" -mtime +30 -exec rm {} \\;\ndocker stop $(docker ps -q) && docker system prune -af',
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "complex", caseSensitive: false },
     ],
@@ -111,7 +111,7 @@ const scenarios = [
     name: "batch-risk-elevation",
     commands: "cat README.md\nls -la\nrm -rf .cache/",
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
     ],
   },
@@ -119,7 +119,7 @@ const scenarios = [
     name: "npm-global-is-high",
     commands: "npm install -g typescript",
     checks: [
-      { type: "starts_with", value: "⚠" },
+      { type: "contains", value: "HIGH", caseSensitive: true },
       { type: "contains", value: "HIGH", caseSensitive: true },
     ],
   },
