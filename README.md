@@ -45,26 +45,26 @@ Low-risk commands stay out of the way:
 
 ```bash
 # Clone and link
-git clone https://github.com/YOUR_USER/wtf-approve.git ~/.claude/skills/wtf-approve
+git clone https://github.com/Sassine/wtf-approve.git ~/.claude/skills/wtf-approve
 ```
 
 Or copy the skill directly:
 
 ```bash
 mkdir -p ~/.claude/skills/wtf-approve
-curl -o ~/.claude/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/YOUR_USER/wtf-approve/main/skills/wtf-approve/SKILL.md
+curl -o ~/.claude/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/Sassine/wtf-approve/main/skills/wtf-approve/SKILL.md
 ```
 
 ### Codex
 
 ```bash
-git clone https://github.com/YOUR_USER/wtf-approve.git ~/.agents/skills/wtf-approve
+git clone https://github.com/Sassine/wtf-approve.git ~/.agents/skills/wtf-approve
 ```
 
 ### Gemini CLI
 
 ```bash
-git clone https://github.com/YOUR_USER/wtf-approve.git ~/.agents/skills/wtf-approve
+git clone https://github.com/Sassine/wtf-approve.git ~/.agents/skills/wtf-approve
 ```
 
 ## Examples
