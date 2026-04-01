@@ -54,13 +54,13 @@ One command. No dependencies.
 ### Claude Code
 
 ```bash
-mkdir -p ~/.claude/skills/wtf-approve && curl -sLo ~/.claude/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/Sassine/wtf-approve/main/skills/wtf-approve/SKILL.md
+mkdir -p ~/.claude/skills/wtf-approve && curl -sLo ~/.claude/skills/wtf-approve/SKILL.md https://github.com/Sassine/wtf-approve/releases/latest/download/SKILL.md
 ```
 
 ### Codex / Gemini CLI
 
 ```bash
-mkdir -p ~/.agents/skills/wtf-approve && curl -sLo ~/.agents/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/Sassine/wtf-approve/main/skills/wtf-approve/SKILL.md
+mkdir -p ~/.agents/skills/wtf-approve && curl -sLo ~/.agents/skills/wtf-approve/SKILL.md https://github.com/Sassine/wtf-approve/releases/latest/download/SKILL.md
 ```
 
 ## Examples
