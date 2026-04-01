@@ -1,5 +1,7 @@
 # wtf-approve
 
+[![Skill Tests](https://github.com/Sassine/wtf-approve/actions/workflows/test.yml/badge.svg)](https://github.com/Sassine/wtf-approve/actions/workflows/test.yml)
+
 > Stop blindly approving agent commands. Understand what you're saying yes to.
 
 **wtf-approve** is an open-source [AI skill](https://agentskills.io) that explains agent execution requests in plain language before you approve them. It works with Claude Code, Codex, Gemini CLI, and any agent that supports the skills spec.

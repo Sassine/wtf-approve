@@ -1,0 +1,11 @@
+{
+  "name": "wtf-approve-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test-skill.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  }
+}
