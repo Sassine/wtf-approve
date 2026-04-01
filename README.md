@@ -150,3 +150,5 @@ PRs welcome. The skill follows the [agentskills.io specification](https://agents
 ## License
 
 MIT
+
+🇧🇷
