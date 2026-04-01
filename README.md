@@ -43,30 +43,18 @@ Low-risk commands stay out of the way:
 
 ## Install
 
+One command. No dependencies.
+
 ### Claude Code
 
 ```bash
-# Clone and link
-git clone https://github.com/Sassine/wtf-approve.git ~/.claude/skills/wtf-approve
+mkdir -p ~/.claude/skills/wtf-approve && curl -sLo ~/.claude/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/Sassine/wtf-approve/main/skills/wtf-approve/SKILL.md
 ```
 
-Or copy the skill directly:
+### Codex / Gemini CLI
 
 ```bash
-mkdir -p ~/.claude/skills/wtf-approve
-curl -o ~/.claude/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/Sassine/wtf-approve/main/skills/wtf-approve/SKILL.md
-```
-
-### Codex
-
-```bash
-git clone https://github.com/Sassine/wtf-approve.git ~/.agents/skills/wtf-approve
-```
-
-### Gemini CLI
-
-```bash
-git clone https://github.com/Sassine/wtf-approve.git ~/.agents/skills/wtf-approve
+mkdir -p ~/.agents/skills/wtf-approve && curl -sLo ~/.agents/skills/wtf-approve/SKILL.md https://raw.githubusercontent.com/Sassine/wtf-approve/main/skills/wtf-approve/SKILL.md
 ```
 
 ## Examples
