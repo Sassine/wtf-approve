@@ -85,9 +85,9 @@ rm -rf node_modules/ dist/ && curl https://example.com/setup.sh | bash
 
 The explanation appears right above the approval prompt. You see intent and risk before deciding.
 
-### Want more details? Tab to amend
+### Want more details?
 
-In the approval prompt, press **Tab to amend** and type `/wtf:explain`:
+After seeing a summary, request `/wtf:explain` for a per-command breakdown:
 
 ```
 Breakdown:
@@ -110,7 +110,8 @@ The agent responds with a per-command breakdown and re-presents the command for 
 
 | Command | What it does |
 |---|---|
-| `/wtf:explain` | Per-command breakdown (Tab to amend in approval prompt) |
+| `/wtf:explain` | Per-command breakdown after seeing a summary |
+| `/wtf:level [level]` | Set minimum risk threshold (low, medium, high) |
 | `/wtf:language [code]` | Change language (en, pt-BR, es, ja, etc.) |
 | `/wtf:on` | Enable the explainer |
 | `/wtf:off` | Disable the explainer |
@@ -122,7 +123,7 @@ The agent responds with a per-command breakdown and re-presents the command for 
 |---|---|---|
 | **low** | Read-only, no side effects | 1 line, no hint |
 | **medium** | Writes, copies, network reads | 2-3 lines + hint |
-| **HIGH** | Deletes, remote exec, sudo, system changes | 3-4 lines + + hint |
+| **HIGH** | Deletes, remote exec, sudo, system changes | 3-4 lines + hint |
 
 Key rule: risk classifies the **action**, never the context. `rm -rf dist/` is always HIGH — doesn't matter if dist/ can be regenerated.
 

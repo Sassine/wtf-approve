@@ -24,15 +24,15 @@ Agentes de IA pedem para você aprovar comandos assim:
 find . -name "*.log" -mtime +30 -exec rm {} \; && docker stop $(docker ps -q) && docker system prune -af
 ```
 
-A maioria das pessoas simplesmente aperta **Allow**. Nao deveria ser assim.
+A maioria das pessoas simplesmente aperta **Allow**. Não deveria ser assim.
 
-## A Solucao
+## A Solução
 
-Com o **wtf-approve**, cada prompt de aprovacao recebe uma explicacao legivel:
+Com o **wtf-approve**, cada prompt de aprovação recebe uma explicação legível:
 
 ```
 Vai remover logs antigos, parar containers Docker e limpar todas as imagens/volumes.
-Risco: ALTO — exclusao de arquivos e prune irreversivel do Docker.
+Risco: ALTO — exclusão de arquivos e prune irreversível do Docker.
 Comando complexo; resumo pode omitir detalhes.
 (mais detalhes: /wtf:explain)
 ```
@@ -40,20 +40,20 @@ Comando complexo; resumo pode omitir detalhes.
 Comandos de baixo risco ficam fora do caminho:
 
 ```
-3 comandos de leitura em src/ e package.json. Nada sera alterado.
+3 comandos de leitura em src/ e package.json. Nada será alterado.
 ```
 
 ## Como Funciona
 
-- **Minimo por padrao** — 1 linha para comandos seguros, 3-4 linhas para perigosos
-- **Classificacao de risco** — low / medium / HIGH baseado na acao, nao no contexto
-- **Detalhes sob demanda** — digite `/wtf:explain` para um detalhamento por comando sem perder o prompt de aprovacao
+- **Mínimo por padrão** — 1 linha para comandos seguros, 3-4 linhas para perigosos
+- **Classificação de risco** — low / medium / HIGH baseado na ação, não no contexto
+- **Detalhes sob demanda** — digite `/wtf:explain` para um detalhamento por comando sem perder o prompt de aprovação
 - **Auto-idioma** — detecta o idioma da conversa. Funciona em qualquer idioma que o LLM suporte
-- **Agnostico de agente** — segue a spec [agentskills.io](https://agentskills.io)
+- **Agnóstico de agente** — segue a spec [agentskills.io](https://agentskills.io)
 
-## Instalacao
+## Instalação
 
-Um comando. Sem dependencias.
+Um comando. Sem dependências.
 
 ### Claude Code
 
@@ -69,7 +69,7 @@ mkdir -p ~/.agents/skills/wtf-approve && curl -sLo ~/.agents/skills/wtf-approve/
 
 ## Exemplos
 
-### Antes (o que voce ve hoje)
+### Antes (o que você vê hoje)
 
 ```
 rm -rf node_modules/ dist/ && curl https://example.com/setup.sh | bash
@@ -80,78 +80,79 @@ rm -rf node_modules/ dist/ && curl https://example.com/setup.sh | bash
 ### Depois (com wtf-approve)
 
 <p align="center">
-  <img src="demo.png" alt="wtf-approve em acao — prompt de aprovacao HIGH risk" width="620" />
+  <img src="demo.png" alt="wtf-approve em ação — prompt de aprovação HIGH risk" width="620" />
 </p>
 
-A explicacao aparece logo acima do prompt de aprovacao. Voce ve a intencao e o risco antes de decidir.
+A explicação aparece logo acima do prompt de aprovação. Você vê a intenção e o risco antes de decidir.
 
-### Quer mais detalhes? Tab to amend
+### Quer mais detalhes?
 
-No prompt de aprovacao, pressione **Tab to amend** e digite `/wtf:explain`:
+Após ver um resumo, solicite `/wtf:explain` para um detalhamento por comando:
 
 ```
 Detalhamento:
-1. rm -rf node_modules/ dist/ — remove dois diretorios. Exclui: node_modules/, dist/. Alto.
-2. curl | bash — baixa e executa script remoto. Executa: codigo remoto nao auditado. Alto.
+1. rm -rf node_modules/ dist/ — remove dois diretórios. Exclui: node_modules/, dist/. Alto.
+2. curl | bash — baixa e executa script remoto. Executa: código remoto não auditado. Alto.
 ```
 
-O agente responde com o detalhamento por comando e reapresenta o comando para aprovacao.
+O agente responde com o detalhamento por comando e reapresenta o comando para aprovação.
 
 ### Mais exemplos
 
 | Comando | wtf-approve diz |
 |---|---|
-| `ls -la` | `1 comando de leitura no diretorio atual. Nada sera alterado.` |
-| `sed -i 's/foo/bar/g' config.json` | `Vai editar config.json.` / `Risco: medio — escrita em arquivo local.` |
-| `curl https://example.com/setup.sh \| bash` | `Vai baixar e executar um script remoto.` / `Risco: ALTO — execucao de codigo remoto nao auditado.` |
-| `git reset --hard HEAD~3` | `Vai descartar os ultimos 3 commits permanentemente.` / `Risco: ALTO — reescrita irreversivel de historico.` |
+| `ls -la` | `1 comando de leitura no diretório atual. Nada será alterado.` |
+| `sed -i 's/foo/bar/g' config.json` | `Vai editar config.json.` / `Risco: médio — escrita em arquivo local.` |
+| `curl https://example.com/setup.sh \| bash` | `Vai baixar e executar um script remoto.` / `Risco: ALTO — execução de código remoto não auditado.` |
+| `git reset --hard HEAD~3` | `Vai descartar os últimos 3 commits permanentemente.` / `Risco: ALTO — reescrita irreversível de histórico.` |
 
 ## Comandos
 
 | Comando | O que faz |
 |---|---|
-| `/wtf:explain` | Detalhamento por comando (Tab to amend no prompt de aprovacao) |
+| `/wtf:explain` | Detalhamento por comando após ver o resumo |
+| `/wtf:level [level]` | Definir limite mínimo de risco (low, medium, high) |
 | `/wtf:language [code]` | Mudar idioma (en, pt-BR, es, ja, etc.) |
 | `/wtf:on` | Ativar o explicador |
 | `/wtf:off` | Desativar o explicador |
-| `/wtf:config` | Mostrar configuracao atual |
+| `/wtf:config` | Mostrar configuração atual |
 
-## Niveis de Risco
+## Níveis de Risco
 
-| Nivel | Quando | Formato |
+| Nível | Quando | Formato |
 |---|---|---|
 | **low** | Somente leitura, sem efeitos colaterais | 1 linha, sem dica |
-| **medium** | Escrita, copia, leitura de rede | 2-3 linhas + dica |
-| **HIGH** | Exclusao, execucao remota, sudo, mudancas no sistema | 3-4 linhas + dica |
+| **medium** | Escrita, cópia, leitura de rede | 2-3 linhas + dica |
+| **HIGH** | Exclusão, execução remota, sudo, mudanças no sistema | 3-4 linhas + dica |
 
-Regra chave: o risco classifica a **acao**, nunca o contexto. `rm -rf dist/` e sempre HIGH — nao importa se dist/ pode ser regenerado.
+Regra chave: o risco classifica a **ação**, nunca o contexto. `rm -rf dist/` é sempre HIGH — não importa se dist/ pode ser regenerado.
 
-## "Mas o Claude Code ja tem Ctrl+E..."
+## "Mas o Claude Code já tem Ctrl+E..."
 
-Sim — o Claude Code tem um `Ctrl+E` nativo que mostra uma **explicacao tecnica de permissao** no prompt de aprovacao. Ele mostra qual tool esta sendo chamada e os parametros brutos.
+Sim — o Claude Code tem um `Ctrl+E` nativo que mostra uma **explicação técnica de permissão** no prompt de aprovação. Ele mostra qual tool está sendo chamada e os parâmetros brutos.
 
-**wtf-approve e diferente.** Ele traduz comandos em intencao humana *antes* de voce precisar perguntar:
+**wtf-approve é diferente.** Ele traduz comandos em intenção humana *antes* de você precisar perguntar:
 
 | | Ctrl+E (nativo) | wtf-approve |
 |---|---|---|
-| **Mostra** | Nome da tool + parametros brutos | O que faz + o que esta em risco |
-| **Idioma** | Somente ingles | Detecta seu idioma automaticamente |
-| **Ativacao** | Atalho manual | Automatico em cada aprovacao |
-| **Publico** | Devs debugando tool calls | Qualquer pessoa aprovando comandos |
+| **Mostra** | Nome da tool + parâmetros brutos | O que faz + o que está em risco |
+| **Idioma** | Somente inglês | Detecta seu idioma automaticamente |
+| **Ativação** | Atalho manual | Automático em cada aprovação |
+| **Público** | Devs debugando tool calls | Qualquer pessoa aprovando comandos |
 
-Sao complementares. Ctrl+E e info de debug. wtf-approve e consentimento informado.
+São complementares. Ctrl+E é info de debug. wtf-approve é consentimento informado.
 
 ## Por Que Isso Existe
 
-Em fluxos de trabalho com IA, usuarios rotineiramente aprovam comandos que nao entendem completamente. Isso cria uma falsa sensacao de controle. **wtf-approve** adiciona uma camada de consentimento que traduz sintaxe de shell em intencao humana — para que voce saiba o que esta aprovando antes de aprovar.
+Em fluxos de trabalho com IA, usuários rotineiramente aprovam comandos que não entendem completamente. Isso cria uma falsa sensação de controle. **wtf-approve** adiciona uma camada de consentimento que traduz sintaxe de shell em intenção humana — para que você saiba o que está aprovando antes de aprovar.
 
-Isso nao e um scanner de seguranca. Nao bloqueia nem permite nada. Apenas explica.
+Isso não é um scanner de segurança. Não bloqueia nem permite nada. Apenas explica.
 
 ## Contribuindo
 
-PRs sao bem-vindos. A skill segue a [especificacao agentskills.io](https://agentskills.io/specification).
+PRs são bem-vindos. A skill segue a [especificação agentskills.io](https://agentskills.io/specification).
 
-## Licenca
+## Licença
 
 MIT
 
