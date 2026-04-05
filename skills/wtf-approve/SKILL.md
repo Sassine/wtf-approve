@@ -1,6 +1,6 @@
 ---
 name: wtf-approve
-description: Use when presenting shell commands, tool calls, or execution requests for user approval. Intercepts approval prompts and generates a minimal human-readable explanation of intent, scope, and risk in the user's language, so users make informed decisions instead of blind approvals.
+description: Use when presenting shell commands or tool calls for user approval. Adds a human-readable explanation of intent, scope, and risk before the approval prompt.
 ---
 
 # wtf-approve
@@ -31,19 +31,20 @@ Minimal by default. Detail on demand via /wtf:explain.
 Classify by ACTION, never by context. "rm -rf dist/" is high because it deletes — irrelevant that dist/ can be regenerated.
 
 low (read-only or no side effects):
-- ls, pwd, find (without -exec/-delete), grep, cat, head, tail, wc, file, which, whoami, echo (without redirect), git status, git log, git diff, true, noop, : (shell builtins)
+- ls, pwd, find (without -exec/-delete), grep, cat, head, tail, wc, file, which, whoami, echo (without redirect), git status, git log, git diff, git branch (list), true, noop, : (shell builtins)
 
 medium (writes/copies/network reads):
-- echo >>, tee, cp, mv, sed -i, git add, git commit, git stash, npm install (local), pip install (local), curl/wget that only reads data (piped to jq/grep/cat/file, or -o to file)
+- echo >>, tee, cp, mv, sed -i, git add, git commit, git stash, git checkout -b, git branch -d, git push (without --force), npm install (local), pip install in active venv, curl/wget that only reads data (piped to jq/grep/cat/file, or -o to file), npm run/make/cargo build (project-scoped build scripts)
 
 high (destructive/system/network+exec):
 - rm, rm -rf, any delete/prune operation
+- kill, pkill, killall
 - curl|bash, wget|sh, or any network download piped to any interpreter/runtime (bash/sh/eval/exec/node/python/ruby/perl/php/deno)
 - sudo (any command)
 - git reset --hard, git push --force, git clean -fd
 - chmod, chown on system paths
 - docker system prune, docker rm -f, docker run --privileged
-- npm install -g, pip install without -r (global installs)
+- npm install -g, pip install outside venv without -r (global installs)
 - Commands accessing credentials, secrets, or sensitive env vars sent over network
 - Direct writes to system paths (/etc, /var, /usr) even without sudo
 
@@ -122,7 +123,7 @@ Risk: HIGH — [short reason].
 
 18. Never explain flags, syntax, operators, or how shell works.
 19. Never use tutorial or teaching mode.
-20. Never show the original command (user already sees it in the approval prompt).
+20. Never reproduce the full command (user already sees it in the approval prompt). Short references in /wtf:explain breakdowns are acceptable.
 21. Never split into multiple paragraphs. One continuous block.
 22. Never pass false confidence — if ambiguous, say so.
 
@@ -135,7 +136,7 @@ Risk: HIGH — [short reason].
 
 ### /wtf:explain
 
-Provides per-command breakdown after seeing a summary. The user triggers this via **Tab to amend** in the approval prompt, typing `/wtf:explain`. The agent responds with the breakdown and re-presents the command for approval.
+Provides per-command breakdown after seeing a summary. The user triggers this after an approval prompt by requesting `/wtf:explain`. The agent responds with the breakdown and re-presents the command for approval.
 
 Output format:
 ```
@@ -159,6 +160,16 @@ Changes the explanation language. Accepts any standard code (en, en-US, pt, pt-B
 /wtf:language pt-BR  → "Idioma alterado para pt-BR."
 /wtf:language es     → "Idioma cambiado a espanol."
 /wtf:language en     → "Language set to English."
+```
+
+### /wtf:level [low|medium|high]
+
+Sets the minimum risk level that triggers an explanation. Commands below the threshold show no explanation.
+
+```
+/wtf:level high    → "Only high risk commands will be explained."
+/wtf:level medium  → "Medium and high risk commands will be explained."
+/wtf:level low     → "All commands will be explained." (default)
 ```
 
 ### /wtf:off
@@ -187,6 +198,7 @@ Shows current configuration state in the active language.
 wtf-approve
 Status: enabled
 Language: en (auto-detected)
+Level: low (all commands)
 ```
 
 ## Examples
@@ -265,13 +277,13 @@ When the user's conversation is in Portuguese, the same commands produce:
 ls -la
 
 ```
-1 comando de leitura no diretorio atual. Nada sera alterado.
+1 comando de leitura no diretório atual. Nada será alterado.
 ```
 
 rm -rf node_modules/ dist/ && curl https://example.com/setup.sh | bash
 
 ```
-Vai remover diretorios e executar script remoto via curl|bash.
-Risco: ALTO — exclusao irreversivel e execucao de codigo remoto nao auditado.
+Vai remover diretórios e executar script remoto via curl|bash.
+Risco: ALTO — exclusão irreversível e execução de código remoto não auditado.
 (mais detalhes: /wtf:explain)
 ```
